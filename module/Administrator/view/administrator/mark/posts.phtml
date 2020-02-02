@@ -1,0 +1,69 @@
+<section class="content-header">
+  <h1>
+	<?php echo $this->translate('Administrar Usuários'); ?>
+  </h1>
+</section>
+
+<div>
+	<!-- Main content -->
+	<section class="content">
+	  <div class="row">
+		<div class="col-xs-12">
+		  <div class="box">
+			<div class="box-header">
+			  <h3 class="box-title"><?php echo $this->translate('Lista de Posts') ?></h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+			  <table id="table-data" class="table table-responsive table-bordered table-hover">
+				<thead>
+				<tr>
+				  <th><?php echo $this->translate('id post') ?></th>
+				  <th><?php echo $this->translate('id usuário') ?></th>
+				  <th><?php echo $this->translate('título') ?></th>
+				  <th><?php echo $this->translate('corpo') ?></th>
+				</tr>
+				</thead>
+				<tbody>
+				  <?php
+				  if(!empty($this->data[0])):
+					foreach ($this->data as $key => $value):
+				  ?>
+				  <tr>
+					  <td><?php echo $value['id'];?></td>
+					  <td><?php echo $value['userId'];?></td>
+					  <td><?php echo $value['title'];?></td>
+					  <td><?php echo $value['body'];?></td>
+				  </tr>
+				<?php
+				  endforeach;
+				endif;
+				?>
+				</tbody>
+			  </table>
+			</div>
+			<!-- /.box-body -->
+		  </div>
+		  <!-- /.box -->
+		</div>
+		<!-- /.col -->
+	  </div>
+	  <!-- /.row -->
+	</section>
+	<!-- /.content -->
+</div>
+
+<!-- page script and css -->
+<!-- DataTables -->
+<?php
+  	//echo
+  	$this->headScript()
+            ->prependFile($this->basePath() . '/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+            ->prependFile($this->basePath() . '/bower_components/datatables.net/js/jquery.dataTables.min.js');
+            $this->headLink()->prependStylesheet($this->basePath() . '/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
+?>
+
+<script type="text/javascript">
+var table = $('#table-data').DataTable();
+$("#table-data tr").css('cursor', 'pointer');
+</script>

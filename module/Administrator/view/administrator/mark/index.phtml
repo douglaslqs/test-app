@@ -1,0 +1,263 @@
+<section class="content-header">
+  <h1>
+	<?php echo $this->translate('Administrar Usuários'); ?>
+  </h1>
+</section>
+
+<div>
+	<!-- Main content -->
+	<section class="content">
+	  <div class="row">
+		<div class="col-xs-12">
+		  <div class="box">
+			<div class="box-header">
+			  <h3 class="box-title"><?php echo $this->translate('Lista de Usuários') ?></h3>
+			  <button class="btn btn-primary" id="btn-register" style="float: right;"><?php echo $this->translate('Cadastrar') ?></button>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+			  <table id="table-data" class="table table-responsive table-bordered table-hover">
+				<thead>
+				<tr>
+				  <th><?php echo $this->translate('id') ?></th>
+				  <th><?php echo $this->translate('name') ?></th>
+				  <th><?php echo $this->translate('username') ?></th>
+				  <th><?php echo $this->translate('email') ?></th>
+				  <th><?php echo $this->translate('phone') ?></th>
+				  <th><?php echo $this->translate('website') ?></th>
+				  <th><?php echo $this->translate('--') ?></th>
+				</tr>
+				</thead>
+				<tbody>
+				  <?php
+				  if(!empty($this->data['_embedded'])):
+					foreach ($this->data['_embedded']['users'] as $key => $value):
+				  ?>
+				  <tr>
+					  <td><?php echo $value['id'];?></td>
+					  <td><?php echo $value['name'];?></td>
+					  <td><?php echo $value['username'];?></td>
+					  <td><?php echo $value['email'];?></td>
+					  <td><?php echo $value['phone'];?></td>
+					  <td><?php echo $value['website'];?></td>
+					  <td>
+					  	<button style="padding: 5px;margin-bottom: 5px;" class="btn btn-success" onclick="getPosts(<?php echo $value['id'];?>)">Posts</button>
+					  	<button style="padding: 5px;margin-bottom: 5px;" class="btn btn-info" onclick="getUser(<?php echo $value['id'];?>)">Editar</button>
+					  	<button style="padding: 5px;margin-bottom: 5px;" class="btn btn-danger" onclick="deleteUser(<?php echo $value['id'];?>)">Excluir</button>
+					  </td>
+				  </tr>
+				<?php
+				  endforeach;
+				endif;
+				?>
+				</tbody>
+			  </table>
+			</div>
+			<!-- /.box-body -->
+		  </div>
+		  <!-- /.box -->
+		</div>
+		<!-- /.col -->
+	  </div>
+	  <!-- /.row -->
+
+        <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              	</button>
+                <h4 class="modal-title" id="modal-title"><?php echo $this->translate('Editar Usuários') ?></h4>
+              </div>
+              <div class="modal-body">
+              	<div id="modal-div-form">
+	              	<!-- form start -->
+		            <form id="form-data" role="form" onsubmit="return false;">
+		              <div class="box-body">
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-name"><?php echo $this->translate('Nome') ?></label>
+		                  <input type="text" class="form-control" id="inp-name" placeholder="Enter name" data-error="Este campo não pode ser vazio" required>
+		                  <div class="help-block with-errors"></div>
+		                </div>
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-username"><?php echo $this->translate('Username') ?></label>
+		                  <input type="text" class="form-control" id="inp-username" placeholder="Enter username" data-error="Este campo não pode ser vazio" required>
+		                  <div class="help-block with-errors"></div>
+		                </div>
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-email"><?php echo $this->translate('E-mail') ?></label>
+		                  <input type="text" class="form-control" id="inp-email" placeholder="Enter e-mail" data-error="Este campo não pode ser vazio" required>
+		                  <div class="help-block with-errors"></div>
+		                </div>
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-phone"><?php echo $this->translate('Phone') ?></label>
+		                  <input type="text" class="form-control" id="inp-phone" placeholder="Enter e-mail" data-error="Este campo não pode ser vazio" required>
+		                  <div class="help-block with-errors"></div>
+		                </div>
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-website"><?php echo $this->translate('Website') ?></label>
+		                  <input type="text" class="form-control" id="inp-website" placeholder="Enter e-mail" data-error="Este campo não pode ser vazio" required>
+		                  <div class="help-block with-errors"></div>
+		                </div>
+		                <br>
+		              </div>
+		              <!-- /.box-body -->
+
+              	</div>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><?php echo $this->translate('Fechar') ?></button>
+                <div class="form-group">
+                	<button type="submit" class="btn btn-primary"><?php echo $this->translate('Salvar alterações') ?></button>
+            	</div>
+              </div>
+
+	            	</form>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+	</section>
+	<!-- /.content -->
+</div>
+
+<!-- page script and css -->
+<!-- DataTables -->
+<?php
+  	//echo
+  	$this->headScript()
+            ->prependFile($this->basePath() . '/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+            ->prependFile($this->basePath() . '/bower_components/datatables.net/js/jquery.dataTables.min.js');
+            $this->headLink()->prependStylesheet($this->basePath() . '/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
+?>
+
+<script type="text/javascript">
+var table = $('#table-data').DataTable();
+$("#table-data tr").css('cursor', 'pointer');
+
+var current_user_id;
+function getPosts(id)
+{
+	window.open("marks/posts?id="+id , '_blank');
+}
+
+function getUser(id)
+{
+	$("#modal-load").modal('show');
+	$("#form-data").attr('operation', 'update');
+	if (id !== "") {
+		$("#modal-default").modal('show');
+		$.ajax({
+			url: "marks/get-user",
+			type: "POST",
+			data: {id : id},
+			dataType: "json"
+		}).done(function(data) {
+			console.log(data);
+			if (!$.isEmptyObject(data.data)) {
+				var data = data.data;
+				$("#inp-name").val(data.name);
+				$("#inp-username").val(data.username);
+				$("#inp-email").val(data.email);
+				$("#inp-phone").val(data.phone);
+				$("#inp-website").val(data.website);
+				current_user_id = data.id;
+			} else {
+				if ($.isEmptyObject(data.data)) {
+					alert("<?php echo $this->translate('Nenhum dado encontrado!') ?>");
+				} else if(!$.isEmptyObject(data)) {
+					alert("Erro ao buscar as informações: "+ data.error);
+				} else {
+					alert("Retorno inesperado!");
+				}
+			}
+			$("#modal-load").modal('hide');
+		}).fail(function(jqXHR, textStatus) {
+			console.log(jqXHR);
+			console.log(textStatus);
+			$("#modal-load").modal('hide');
+		  	alert( "Request failed: " + textStatus );
+		});
+	} else {
+		$("#modal-load").modal('hide');
+		alert("Id do usuário não encontrado!");
+	}
+}
+
+$("#btn-register").click(function(e) {
+	e.preventDefault();
+	$("#modal-title").html("<?php echo $this->translate("Cadastrar") ?>");
+	$("#form-data").attr('operation', 'add');
+	$("#btn-save").text("<?php echo $this->translate("Salvar") ?>");
+	$('#form-data input').val("");
+	$("#chk-active").prop("checked", false);
+	$("#modal-default").modal("show");
+});
+
+$("#form-data").on("submit", function(e) {
+	var operation = $(this).attr('operation');
+	var active = 0;
+	if ($("#chk-active").is(':checked')) {
+		active = 1;
+	}
+	$("#modal-load").modal('show');
+	var data = {id: current_user_id, name: $("#inp-name").val(), username:$("#inp-username").val(), email: $("#inp-email").val(), phone: $("#inp-phone").val(), website: $("#inp-name").val()};
+	$.ajax({
+		url: 'marks/'+operation,
+		type: "POST",
+		data: data,
+		dataType: "json"
+	}).done(function(data) {
+		if (!$.isEmptyObject(data)) {
+				$("#modal-default").modal('hide');
+				alert("Alteração realizada com sucesso!");
+				location.reload();
+		} else {
+			if ($.isEmptyObject(data.data)) {
+				alert("<?php echo $this->translate('Nenhum dado encontrado!') ?>");
+			} else if(!$.isEmptyObject(data)) {
+				alert("Erro ao buscar as informações: "+ data.error);
+			} else {
+				alert("Retorno inesperado!");
+			}
+			$("#modal-load").modal('hide');
+		}
+	}).fail(function(jqXHR, textStatus) {
+		$("#modal-load").modal('hide');
+	  	alert("Request failed: " + textStatus);
+	});
+});
+
+function deleteUser(id)
+{
+	conf = confirm("Deseja Excluir o usuário de id: "+id+"?");
+	if(conf) {
+		$("#modal-load").modal('show');
+		$.ajax({
+			url: 'marks/delete',
+			type: "POST",
+			data: {id:id},
+			dataType: "json"
+		}).done(function(data) {
+			console.log(data);
+			if (data == true) {
+				$("#modal-default").modal('hide');
+				alert("Alteração realizada com sucesso!");
+				location.reload();
+			} else {
+				alert("Erro ao efetuar a operação: "+ data);
+				$("#modal-load").modal('hide');
+			}
+		}).fail(function(jqXHR, textStatus) {
+			$("#modal-load").modal('hide');
+		  	alert("Request failed: " + textStatus);
+		});
+	}
+}
+</script>

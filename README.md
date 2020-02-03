@@ -43,7 +43,7 @@ app: https://github.com/douglaslqs/test-app
 
 
 - Executar o arquivo `data/database/test.sql` localizado na aplicação `test-api` para criar a base de dados;
-- Criar os vhosts `test-api`, `test-api-source` e `test-app`
+- Criar os vhosts `test-api.local`, `test-api-source.local` e `test-app.local`
 - Baixar os projetos respectivamente dentro dos diretórios representados pelos nomes dos vhosts;
 - Caso necessário, configurar as conexões com o banco de dados no arquivo `config/autoload/local.php` de cada projeto.
 

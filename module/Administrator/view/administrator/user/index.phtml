@@ -144,7 +144,7 @@ $("#table-data tr").css('cursor', 'pointer');
 var current_user_id;
 function getPosts(id)
 {
-	window.open("marks/posts?id="+id , '_blank');
+	window.open("users/posts?id="+id , '_blank');
 }
 
 function getUser(id)
@@ -154,7 +154,7 @@ function getUser(id)
 	if (id !== "") {
 		$("#modal-default").modal('show');
 		$.ajax({
-			url: "marks/get-user",
+			url: "users/get-user",
 			type: "POST",
 			data: {id : id},
 			dataType: "json"
@@ -209,7 +209,7 @@ $("#form-data").on("submit", function(e) {
 	$("#modal-load").modal('show');
 	var data = {id: current_user_id, name: $("#inp-name").val(), username:$("#inp-username").val(), email: $("#inp-email").val(), phone: $("#inp-phone").val(), website: $("#inp-name").val()};
 	$.ajax({
-		url: 'marks/'+operation,
+		url: 'users/'+operation,
 		type: "POST",
 		data: data,
 		dataType: "json"
@@ -219,7 +219,11 @@ $("#form-data").on("submit", function(e) {
 				alert("Alteração realizada com sucesso!");
 				location.reload();
 		} else {
-			if ($.isEmptyObject(data.data)) {
+			if (data == true) {
+				$("#modal-default").modal('hide');
+				alert("Alteração realizada com sucesso!");
+				location.reload();
+			}else if ($.isEmptyObject(data.data)) {
 				alert("<?php echo $this->translate('Nenhum dado encontrado!') ?>");
 			} else if(!$.isEmptyObject(data)) {
 				alert("Erro ao buscar as informações: "+ data.error);
@@ -240,7 +244,7 @@ function deleteUser(id)
 	if(conf) {
 		$("#modal-load").modal('show');
 		$.ajax({
-			url: 'marks/delete',
+			url: 'users/delete',
 			type: "POST",
 			data: {id:id},
 			dataType: "json"

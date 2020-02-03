@@ -11,7 +11,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Administrator\Service\ApiRequestService;
 
-class MarkController extends AbstractActionController
+class UserController extends AbstractActionController
 {
     private $logger;
     private $objApiRequest;
@@ -96,7 +96,6 @@ class MarkController extends AbstractActionController
     public function updateAction()
     {
         $arrParams = $this->getArrayParams();
-        //echo json_encode(var_export($arrParams));exit;
         $this->objApiRequest->setUri(ApiRequestService::URI_API.'users/'.$arrParams['id']);
         $this->objApiRequest->setParameters($arrParams);
         $this->objApiRequest->setMethod(ApiRequestService::METHOD_PUT);

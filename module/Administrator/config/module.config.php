@@ -8,16 +8,10 @@ use Zend\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
-            Controller\AuthController::class => Controller\Factory\AuthFactory::class,
-            Controller\MarkController::class => Controller\Factory\MarkFactory::class,
-            Controller\LocationController::class => Controller\Factory\LocationFactory::class,
+            Controller\UserController::class => Controller\Factory\UserFactory::class,
         ],
         'aliases' => [
-            'index' => Controller\IndexController::class,
-            'auth' => Controller\AuthController::class,
-            'marks' => Controller\MarkController::class,
-            'location' => Controller\LocationController::class,
+            'users' => Controller\UserController::class,
         ],
     ],
     'router' => [
@@ -27,7 +21,7 @@ return [
                 'options' => [
                     'route'    => '/administrator',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
+                        'controller' => Controller\UserController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -49,24 +43,10 @@ return [
                     ],
                 ],
             ],
-
-            /*'administrator' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/administrator[/][/:controller][/][/:action][/]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ], */
         ],
     ],
     'service_manager' => [
         'factories' => [
-            \Zend\Authentication\AuthenticationService::class=>Service\Factory\AuthenticationFactory::class,
-            Service\AuthManagerService::class=>Service\Factory\AuthManagerFactory::class,
-            Service\AuthAdapterService::class=>Service\Factory\AuthAdapterFactory::class,
             Service\ApiRequestService::class=>Service\Factory\ApiRequestFactory::class,
             \Zend\I18n\Translator\TranslatorInterface::class => \Zend\I18n\Translator\TranslatorServiceFactory::class,
         ],
